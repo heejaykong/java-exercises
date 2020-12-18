@@ -1,5 +1,10 @@
 package com.Yeah;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 class Beverage {
     String name;
@@ -9,8 +14,30 @@ class Beverage {
         this.price = price;
     }
 }
-public class Main {
-    public static void main(String[] args) {
+public class Main implements ActionListener {
+    private int clicks = 0;
+    private JLabel label = new JLabel("Number of clicks:  0     ");
+    private JFrame frame = new JFrame();
+
+    public Main(){
+        // the clickable button
+        JButton button = new JButton("Click Me");
+        button.addActionListener(this);
+
+        // the panel with the button and text
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        panel.setLayout(new GridLayout(0, 1));
+        panel.add(button);
+        panel.add(label);
+
+        // set up the frame and display it
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("GUI");
+        frame.pack();
+        frame.setVisible(true);
+
         List<Beverage> bevs = new ArrayList<Beverage>();
         Beverage cafeLatte = new Beverage("Iced Cafe Latte", 1500);
         Beverage vanillaLatte = new Beverage("Iced Vanilla Latte", 2000);
@@ -48,9 +75,18 @@ public class Main {
         int choice = scanner.nextInt()-1;
         System.out.println(bevs.get(choice).name + "를 고르셨습니다.");
 
-        int balance = moneyPaid - bevs.get(choice).price;
-        System.out.println("￦"+balance + "의 거스름돈을 가져가세요.");
+        int change = moneyPaid - bevs.get(choice).price;
+        System.out.println("￦"+change + "의 거스름돈을 가져가세요.");
 
         scanner.close();
+    }
+    // process the button clicks
+    public void actionPerformed(ActionEvent e) {
+        clicks++;
+        label.setText("Number of clicks:  " + clicks);
+    }
+    public static void main(String[] args) {
+        new Main();
+
     }
 }
